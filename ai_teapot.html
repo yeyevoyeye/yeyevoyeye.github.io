@@ -2,10 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rocking Cradle | Project Details</title>
     <style>
-        body { font-family: "Helvetica", Arial, sans-serif; margin: 0; padding: 20px; color: #333; line-height: 1.4; }
+
+body{
+  font-family: "Helvetica", Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  line-height: 1.4;
+  position: relative; /* needed for layering */
+  background: #fff;
+}
+
+/* ---------- Page background image (grayscale) ---------- */
+/* Put a big image underneath everything */
+body::before{
+  content: "";
+  position: fixed;        /* stay fixed when scrolling */
+  inset: 0;
+  z-index: -1;            /* behind content */
+  background-image: url("assets/bg.jpg"); /* TODO: replace with your image path */
+  background-size: cover;
+  background-position: left center; /* bias to the left */
+  filter: grayscale(100%);
+  opacity: 0.18;          /* tune this */
+  pointer-events: none;
+}
+
+/* Optional: add a subtle white veil to keep text readable */
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255,255,255,0.75); /* tune this */
+  pointer-events: none;
+}
+
         
         /* 顶部导航模仿 */
         header { display: flex; justify-content: space-between; margin-bottom: 40px; font-size: 13px; }
@@ -14,26 +48,63 @@
         nav a { text-decoration: none; color: #000; text-transform: uppercase; display: block; }
 
         /* 核心两栏布局 */
-        .container { display: flex; gap: 40px; align-items: flex-start; }
-        
-        /* 左侧文字栏 */
-        .sidebar { width: 30%; font-size: 13px; }
-        .sidebar h2 { font-size: 18px; margin: 0 0 10px 0; color: #666; }
-        .sidebar .meta { color: #999; margin-bottom: 20px; }
-        .sidebar .description { margin-bottom: 30px; text-align: justify; }
-        .sidebar .credits { font-size: 11px; color: #bbb; text-transform: uppercase; }
+.container{
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
 
-        /* 右侧内容栏 */
-        .main-content { width: 70%; }
-        /* Featured image: keep a stable canvas height (set by JS on load); image preserves aspect ratio */
-        .featured-image { position: relative; overflow: hidden; background: #fafafa; display: flex; align-items: center; justify-content: center; min-height: 360px; }
-        .featured-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
-        .featured-image .arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.95); border: none; padding: 8px 12px; cursor: pointer; font-size: 20px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+  /* Center the whole two-column block, so it won't stick to the right edge */
+  justify-content: center;
+
+  /* Limit the overall canvas width */
+  max-width: 1600px;   /* tune this: 1200~1600 */
+  margin: 0 auto;      /* centered */
+  padding-right: 40px; /* extra breathing room on the right */
+  padding-left: 40px;
+  width: 100%;
+}
+
+/* Left column: flexible but smaller */
+.sidebar{
+  flex: 0 1 38%;        /* ~1/3 */
+  max-width: 420px;     /* keeps it from getting too wide */
+  font-size: 13px;
+}
+
+/* Right column: takes 3/5~2/3 of the space */
+.main-content{
+  flex: 0 1 62%;        /* ~2/3 */
+  max-width: 980px;     /* keeps media block stable */
+  padding-right: 60px;   /* add breathing room */
+  box-sizing: border-box;
+}
+
+
+        /* 主图区域：保持固定“画布”高度一致 */
+.featured-image{
+  position: relative;
+  overflow: hidden;
+  background: rgba(250,250,250,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* lock the "canvas" ratio */
+  aspect-ratio: 3 / 2;   /* TODO: adjust (e.g., 3/2 or 4/3) */
+  width: 100%;
+}
+.featured-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+        .featured-image .arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.8); border: none; width: 34px; height: 34px; cursor: pointer; font-size: 18px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
         .featured-image .arrow.left { left: 12px; }
         .featured-image .arrow.right { right: 12px; }
-        .featured-image .arrow[disabled] { opacity: 0.45; cursor: default; }
+        .featured-image .arrow:hover { background: rgba(255,255,255,0.95); }
 
-        /* 缩略图矩阵（列数随容器宽度自动调整，缩略图优先宽度固定；保持原始宽高比） */
+        /* 缩略图网格：固定缩略图宽度；高度随原图比例变化 */
         :root { --thumb-w: 120px; }
         .thumb-grid {
             display: grid;
@@ -55,6 +126,21 @@
         .thumb-grid img.active { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
         footer { margin-top: 50px; font-size: 10px; color: #ccc; }
+    
+@media (max-width: 900px){
+  .container{
+    flex-direction: column; 
+    justify-content: flex-end; /* flex-start */
+  }
+  .sidebar{
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .main-content{
+    width: 100%;
+  }
+}
+
     </style>
 </head>
 <body>
@@ -62,55 +148,51 @@
 <header>
     <div class="logo">EPI-<br>PHYTE<br>LAB</div>
     <nav>
-        <a href="index.html">ALL PROJECTS /ecologies</a>
-        <a href="#">PRACTICE</a>
-        <a href="#">DESIGN RESEARCH</a>
+        <ul>
+            <li><a href="#">ALL PROJECTS / ECOLOGIES</a></li>
+            <li><a href="#">PRACTICE</a></li>
+            <li><a href="#">DESIGN RESEARCH</a></li>
+        </ul>
     </nav>
 </header>
 
 <div class="container">
     <div class="sidebar">
         <h2>Rocking Cradle</h2>
-        <div class="meta">
-            | Hazlewood Pittsburgh, PA | 2022 |<br>
-            | Urban Furniture | Built |
-        </div>
-        <div class="description">
+        <div class="meta">| Hazelwood Pittsburgh, PA | 2022 |<br>| Urban Furniture | Built |</div>
+        <p>
             The Rocking Cradle is an interactive installation featuring binder-jet-printed vessels integrated into a public tree nursery. Inspired by hydrological and geological processes...
             <br><br>
             <i>(You can write your English comments here)</i>
-        </div>
-        <div class="credits">
-            | DESIGN TEAM: yeyevoyeye, etc. |<br>
-            | FUNDING: Global Research Institute |
-        </div>
+        </p>
+        <div class="meta">| DESIGN TEAM: YEYEVOYEYE, ETC. |<br>| FUNDING: GLOBAL RESEARCH INSTITUTE |</div>
     </div>
 
     <div class="main-content">
         <div class="featured-image">
-            <button class="arrow left" aria-label="Previous image">‹</button>
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.png" alt="Main Project Image">
-            <button class="arrow right" aria-label="Next image">›</button>
+            <button class="arrow left">&#8249;</button>
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting6.png" alt="Featured image">
+            <button class="arrow right">&#8250;</button>
         </div>
-        
+
         <div class="thumb-grid">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting1.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting2.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting3.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting4.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting5.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting7.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting8.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting9.png" alt="thumb">
-      
-            </div>
-    </div> 
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting1.png" alt="thumb1">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting2.png" alt="thumb2">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting3.png" alt="thumb3">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting4.png" alt="thumb4">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting5.png" alt="thumb5">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting6.png" alt="thumb6">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting7.png" alt="thumb7">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting8.png" alt="thumb8">
+            <img src="ai_teapot_PortfolioImage\ai_still_life_painting9.png" alt="thumb9">
+        </div>
+    </div>
 </div>
 
 <footer>© 2025 yeyevoyeye studio</footer>
 
 <script>
+
 (function(){
   const container = document.querySelector('.featured-image');
   const featured = container.querySelector('img');
@@ -125,40 +207,42 @@
   const images = [featured.src.replace(/\\+/g,'/')].concat(thumbs.map(t=>t.src));
   let idx = 0; // current index in images
 
-  // Set container height once based on displayed height of the initial featured image
-  function setInitialCanvasHeight(){
-    // If image not yet loaded, wait.
-    if(!featured.complete){ featured.addEventListener('load', setInitialCanvasHeight); return; }
-    const rect = featured.getBoundingClientRect();
-    // Lock the container height in pixels so switching images won't change it
-    container.style.height = rect.height + 'px';
-  }
-
   // Update featured src and active thumbnail
   function updateFeatured(){
     featured.src = images[idx];
-    // highlight corresponding thumbnail (if any)
-    thumbs.forEach(t=>t.classList.remove('active'));
-    const thumbIndex = idx - 1; // because images[0] is the main originally
-    if(thumbIndex >=0 && thumbs[thumbIndex]) thumbs[thumbIndex].classList.add('active');
 
-    leftBtn.disabled = idx === 0;
-    rightBtn.disabled = idx >= images.length - 1;
+    // highlight active thumb if exists in thumbs
+    thumbs.forEach(t => t.classList.remove('active'));
+    const thumbIdx = thumbs.findIndex(t=>t.src === images[idx]);
+    if(thumbIdx >= 0) thumbs[thumbIdx].classList.add('active');
+
+    // enable/disable arrows at ends
+    leftBtn.disabled = (idx === 0);
+    rightBtn.disabled = (idx === images.length - 1);
+    leftBtn.style.opacity = leftBtn.disabled ? 0.35 : 1;
+    rightBtn.style.opacity = rightBtn.disabled ? 0.35 : 1;
+    leftBtn.style.cursor = leftBtn.disabled ? 'default' : 'pointer';
+    rightBtn.style.cursor = rightBtn.disabled ? 'default' : 'pointer';
   }
 
-  // thumbnail clicks
-  thumbs.forEach((t, i)=>{
-    t.addEventListener('click', ()=>{ idx = i + 1; updateFeatured(); });
+  // Click thumbnail to set featured
+  thumbs.forEach(t=>{
+    t.addEventListener('click', ()=>{
+      const s = t.src;
+      idx = images.findIndex(x=>x===s);
+      if(idx < 0) idx = 0;
+      updateFeatured();
+    });
   });
 
+  // Arrows
   leftBtn.addEventListener('click', ()=>{ idx = Math.max(0, idx - 1); updateFeatured(); });
   rightBtn.addEventListener('click', ()=>{ idx = Math.min(images.length - 1, idx + 1); updateFeatured(); });
 
   // Initialize
-  setInitialCanvasHeight();
   updateFeatured();
-  // Do NOT change container height on window resize to keep canvas height fixed; user can reload for a new baseline if desired
 })();
+
 </script>
 
 </body>
