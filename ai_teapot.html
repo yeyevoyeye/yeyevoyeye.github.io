@@ -25,12 +25,19 @@
 
         /* 右侧内容栏 */
         .main-content { width: 70%; }
-        .featured-image img { width: 100%; height: auto; display: block; }
-        
+        /* Featured image: keep a stable canvas height (set by JS on load); image preserves aspect ratio */
+        .featured-image { position: relative; overflow: hidden; background: #fafafa; display: flex; align-items: center; justify-content: center; min-height: 360px; }
+        .featured-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .featured-image .arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.95); border: none; padding: 8px 12px; cursor: pointer; font-size: 20px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+        .featured-image .arrow.left { left: 12px; }
+        .featured-image .arrow.right { right: 12px; }
+        .featured-image .arrow[disabled] { opacity: 0.45; cursor: default; }
+
         /* 缩略图矩阵 */
         .thumb-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-top: 20px; }
-        .thumb-grid img { width: 100%; height: auto; cursor: pointer; filter: grayscale(100%); transition: 0.3s; }
-        .thumb-grid img:hover { filter: grayscale(0%); }
+        .thumb-grid img { width: 100%; height: auto; cursor: pointer; filter: grayscale(100%); transition: 0.25s; }
+        .thumb-grid img:hover, .thumb-grid img.active { filter: none; outline: 2px solid #eee; }
+        .thumb-grid img.active { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
         footer { margin-top: 50px; font-size: 10px; color: #ccc; }
     </style>
@@ -66,26 +73,79 @@
 
     <div class="main-content">
         <div class="featured-image">
+            <button class="arrow left" aria-label="Previous image">‹</button>
             <img src="ai_teapot_PortfolioImage/ai_still_life_painting-main.jpeg" alt="Main Project Image">
+            <button class="arrow right" aria-label="Next image">›</button>
         </div>
         
         <div class="thumb-grid">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting1.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting2.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting3.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting4.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting5.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting6.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting7.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting8.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting9.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting10.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage\ai_still_life_painting11.jpeg" alt="thumb">         
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting1.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting2.jpg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting3.jpg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting4.jpg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting5.jpeg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.jpeg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting7.jpeg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting8.jpeg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting9.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting10.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting11.jpeg" alt="thumb">         
             </div>
-    </div>
+    </div> 
 </div>
 
 <footer>© 2025 yeyevoyeye studio</footer>
+
+<script>
+(function(){
+  const container = document.querySelector('.featured-image');
+  const featured = container.querySelector('img');
+  const leftBtn = container.querySelector('.arrow.left');
+  const rightBtn = container.querySelector('.arrow.right');
+  const thumbs = Array.from(document.querySelectorAll('.thumb-grid img'));
+
+  // Normalize thumbnail srcs (convert backslashes to forward slashes)
+  thumbs.forEach(t => { t.src = t.src.replace(/\\+/g,'/'); });
+
+  // Build images array: main featured image first, then all thumbnails (so arrows cycle through these)
+  const images = [featured.src.replace(/\\+/g,'/')].concat(thumbs.map(t=>t.src));
+  let idx = 0; // current index in images
+
+  // Set container height once based on displayed height of the initial featured image
+  function setInitialCanvasHeight(){
+    // If image not yet loaded, wait.
+    if(!featured.complete){ featured.addEventListener('load', setInitialCanvasHeight); return; }
+    const rect = featured.getBoundingClientRect();
+    // Lock the container height in pixels so switching images won't change it
+    container.style.height = rect.height + 'px';
+  }
+
+  // Update featured src and active thumbnail
+  function updateFeatured(){
+    featured.src = images[idx];
+    // highlight corresponding thumbnail (if any)
+    thumbs.forEach(t=>t.classList.remove('active'));
+    const thumbIndex = idx - 1; // because images[0] is the main originally
+    if(thumbIndex >=0 && thumbs[thumbIndex]) thumbs[thumbIndex].classList.add('active');
+
+    leftBtn.disabled = idx === 0;
+    rightBtn.disabled = idx >= images.length - 1;
+  }
+
+  // thumbnail clicks
+  thumbs.forEach((t, i)=>{
+    t.addEventListener('click', ()=>{ idx = i + 1; updateFeatured(); });
+  });
+
+  leftBtn.addEventListener('click', ()=>{ idx = Math.max(0, idx - 1); updateFeatured(); });
+  rightBtn.addEventListener('click', ()=>{ idx = Math.min(images.length - 1, idx + 1); updateFeatured(); });
+
+  // Initialize
+  setInitialCanvasHeight();
+  updateFeatured();
+  // Do NOT change container height on window resize to keep canvas height fixed; user can reload for a new baseline if desired
+})();
+</script>
 
 </body>
 </html>
