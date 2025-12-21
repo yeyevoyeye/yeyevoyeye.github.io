@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocking Cradle | Project Details</title>
+    <style>
+        body { font-family: "Helvetica", Arial, sans-serif; margin: 0; padding: 20px; color: #333; line-height: 1.4; }
+        
+        /* 顶部导航模仿 */
+        header { display: flex; justify-content: space-between; margin-bottom: 40px; font-size: 13px; }
+        .logo { font-weight: bold; font-size: 22px; text-transform: uppercase; }
+        nav ul { list-style: none; padding: 0; text-align: right; }
+        nav a { text-decoration: none; color: #000; text-transform: uppercase; display: block; }
+
+        /* 核心两栏布局 */
+        .container { display: flex; gap: 40px; align-items: flex-start; }
+        
+        /* 左侧文字栏 */
+        .sidebar { width: 30%; font-size: 13px; }
+        .sidebar h2 { font-size: 18px; margin: 0 0 10px 0; color: #666; }
+        .sidebar .meta { color: #999; margin-bottom: 20px; }
+        .sidebar .description { margin-bottom: 30px; text-align: justify; }
+        .sidebar .credits { font-size: 11px; color: #bbb; text-transform: uppercase; }
+
+        /* 右侧内容栏 */
+        .main-content { width: 70%; }
+        .featured-image img { width: 100%; height: auto; display: block; }
+        
+        /* 缩略图矩阵 */
+        .thumb-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-top: 20px; }
+        .thumb-grid img { width: 100%; height: auto; cursor: pointer; filter: grayscale(100%); transition: 0.3s; }
+        .thumb-grid img:hover { filter: grayscale(0%); }
+
+        footer { margin-top: 50px; font-size: 10px; color: #ccc; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">EPI-<br>PHYTE<br>LAB</div>
+    <nav>
+        <a href="index.html">ALL PROJECTS /ecologies</a>
+        <a href="#">PRACTICE</a>
+        <a href="#">DESIGN RESEARCH</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <h2>Rocking Cradle</h2>
+        <div class="meta">
+            | Hazlewood Pittsburgh, PA | 2022 |<br>
+            | Urban Furniture | Built |
+        </div>
+        <div class="description">
+            The Rocking Cradle is an interactive installation featuring binder-jet-printed vessels integrated into a public tree nursery. Inspired by hydrological and geological processes...
+            <br><br>
+            <i>(You can write your English comments here)</i>
+        </div>
+        <div class="credits">
+            | DESIGN TEAM: yeyevoyeye, etc. |<br>
+            | FUNDING: Global Research Institute |
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="featured-image">
+            <img src="https://via.placeholder.com/800x600" alt="Main Project Image">
+        </div>
+        
+        <div class="thumb-grid">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            <img src="https://via.placeholder.com/100" alt="thumb">
+            </div>
+    </div>
+</div>
+
+<footer>© 2025 yeyevoyeye studio</footer>
+
+</body>
+</html>
