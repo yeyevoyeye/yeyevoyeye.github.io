@@ -33,20 +33,21 @@
         .featured-image .arrow.right { right: 12px; }
         .featured-image .arrow[disabled] { opacity: 0.45; cursor: default; }
 
-        /* 缩略图矩阵（列数随容器宽度自动调整，缩略图宽度固定） */
-        :root { --thumb-w: 120px; --thumb-h: 90px; }
+        /* 缩略图矩阵（列数随容器宽度自动调整，缩略图优先宽度固定；保持原始宽高比） */
+        :root { --thumb-w: 120px; }
         .thumb-grid {
             display: grid;
-            /* 每列固定宽度（--thumb-w），列数会根据容器宽自动填充 */
-            grid-template-columns: repeat(auto-fill, var(--thumb-w));
+            /* 使用 minmax 让列在窄屏下收缩以避免水平滚动，同时在宽屏下尽可能保持约定的缩略图宽度 */
+            grid-template-columns: repeat(auto-fill, minmax(var(--thumb-w), 1fr));
             gap: 10px;
             margin-top: 20px;
             justify-content: start; /* 左对齐，不拉伸列 */
+            align-items: start; /* 不同高的缩略图在行中顶部对齐 */
         }
         .thumb-grid img {
-            width: var(--thumb-w);
-            height: var(--thumb-h);
-            object-fit: 'cover'; /* 填满且保持比例；要完整显示可改为 'contain' */
+            width: 100%;
+            height: auto; /* 保持原始宽高比 */
+            object-fit: contain; /* 保证图片完整显示，不被裁切 */
             cursor: pointer;
             display: block;
         }
@@ -88,22 +89,21 @@
     <div class="main-content">
         <div class="featured-image">
             <button class="arrow left" aria-label="Previous image">‹</button>
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting-main.jpeg" alt="Main Project Image">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.png" alt="Main Project Image">
             <button class="arrow right" aria-label="Next image">›</button>
         </div>
         
         <div class="thumb-grid">
             <img src="ai_teapot_PortfolioImage/ai_still_life_painting1.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting2.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting3.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting4.jpg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting5.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting7.jpeg" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting8.jpeg" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting2.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting3.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting4.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting5.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting6.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting7.png" alt="thumb">
+            <img src="ai_teapot_PortfolioImage/ai_still_life_painting8.png" alt="thumb">
             <img src="ai_teapot_PortfolioImage/ai_still_life_painting9.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting10.png" alt="thumb">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting11.jpeg" alt="thumb">         
+      
             </div>
     </div> 
 </div>
