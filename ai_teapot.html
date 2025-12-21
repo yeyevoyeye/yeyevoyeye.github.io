@@ -33,9 +33,23 @@
         .featured-image .arrow.right { right: 12px; }
         .featured-image .arrow[disabled] { opacity: 0.45; cursor: default; }
 
-        /* 缩略图矩阵 */
-        .thumb-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; margin-top: 20px; }
-        .thumb-grid img { width: 100%; height: auto; cursor: pointer; filter: grayscale(100%); transition: 0.25s; }
+        /* 缩略图矩阵（列数随容器宽度自动调整，缩略图宽度固定） */
+        :root { --thumb-w: 120px; --thumb-h: 90px; }
+        .thumb-grid {
+            display: grid;
+            /* 每列固定宽度（--thumb-w），列数会根据容器宽自动填充 */
+            grid-template-columns: repeat(auto-fill, var(--thumb-w));
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: start; /* 左对齐，不拉伸列 */
+        }
+        .thumb-grid img {
+            width: var(--thumb-w);
+            height: var(--thumb-h);
+            object-fit: 'cover'; /* 填满且保持比例；要完整显示可改为 'contain' */
+            cursor: pointer;
+            display: block;
+        }
         .thumb-grid img:hover, .thumb-grid img.active { filter: none; outline: 2px solid #eee; }
         .thumb-grid img.active { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
