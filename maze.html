@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Wearable Symbiotic Tentacles | Project Details</title>
+    <title>Generative Recursive Space | Project Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
   
@@ -21,14 +21,14 @@ body{
 /* Put a big image underneath everything */
 body::before{
   content: "";
-  position: fixed;        /* stay fixed when scrolling */
+  position: fixed;
   inset: 0;
-  z-index: -1;            /* behind content */
-  background-image: url("assets/bg.jpg"); /* TODO: replace with your image path */
+  z-index: -2;                 /* 放更底层 */
+  background-image: url("assets/bg.jpg");
   background-size: cover;
-  background-position: left center; /* bias to the left */
+  background-position: left center;
   filter: grayscale(100%);
-  opacity: 0.18;          /* tune this */
+  opacity: 0.06;               /* ✅ 大幅降低：避免洗灰 */
   pointer-events: none;
 }
 
@@ -169,31 +169,33 @@ body::after{
 
 <div class="container">
     <div class="sidebar">
-        <h2>Wearable Symbiotic Tentacles</h2>
-        <div class="meta">| CMU | Course project of Kinetic Fabrics |<br>| 2025 |<br>| Wearable Robotics | Cable-driven Mechanism |<br>| Stepper Motors | Arduino | Laser cutting |    </div>
+        <h2>Generative Recursive Space</h2>
+        <div class="meta">| CMU | Course project of Scripting & Parametric Design |<br>| 2025 |<br>| Rhino Python | L-system |    </div>
         <p>
-            This project explores the extension of the human body’s spatial scale by amplifying bodily intention and response through a wearable system. It investigates a symbiotic relationship between the human body and non-human motion, reconfiguring conventional body imagination beyond bipedal norms. The design originates from speculative explorations of tentacle-like motions across different actions: providing dynamic balance during jumping, posture compensation during throwing, ergonomic support during working, and load transfer during carrying. 
+            This project treats space as a written language, where architectural elements emerge from a generative grammar rather than a predefined form. Through the repeated application of simple local rules, complex spatial order arises as an emergent condition. Recursive rewriting enables the space to continuously extend and transform itself, producing Escher-like spatial continuity and perceptual ambiguity.
         </p>
-            The prototype is realized through a cable-driven mechanism, where tension transmitted along fixed discs and stabilized by a central shaft converts pulling forces into controlled movement. Fabric-based morphological studies—including fabrics patching, fabrics extension, and fabrics cutting—were conducted to approximate the geometry qualities of tentacle suckers. 
-        </p>
-            Finally, the wearable system was tested by multiple participants, who engaged with the device through diverse bodily movements. Through these embodied interactions, the project realizes body extension as a shared and experiential process.
+            The project develops a rule-based generative spatial system using L-systems implemented in Rhino Python. Abstract grammar rules are encoded as symbolic sequences and recursively rewritten into parametric architectural elements. A set of controllable parameters—including generation depth, branch ratio, and bounding box constraints—regulates structural growth, path complexity, and spatial orientation, translating formal grammar into a three-dimensional spatial system.
             <br><br>
         </p>
-        <div class="meta">| DESIGN TEAM: Yeye Deng & Siyu Ou | </div>
+        <div class="meta">| DESIGN TEAM: Yeye Deng & Bilge Kosem  | </div>
     </div>
 
     <div class="main-content">
         <div class="featured-image">
             <button class="arrow left">&#8249;</button>
-            <img src="tentacles_PortfolioImage\outcomes.gif" alt="Featured image">
+            <img src="maze_PortfolioImage\portfoliolayout-07.gif" alt="Featured image">
             <button class="arrow right">&#8250;</button>
         </div>
 
         <div class="thumb-grid">
 
-            <img src="tentacles_PortfolioImage\analysis.gif" alt="thumb2">
-            <img src="tentacles_PortfolioImage\concept.jpg" alt="thumb3">
-            <img src="tentacles_PortfolioImage\outcomes.gif" alt="thumb1">
+            <img src="maze_PortfolioImage\portfoliolayout-01.png" alt="">
+            <img src="maze_PortfolioImage\portfoliolayout-03.png" alt="">
+            <img src="maze_PortfolioImage\portfoliolayout-04.png" alt="">
+            <img src="maze_PortfolioImage\portfoliolayout-05.png" alt="">
+            <img src="maze_PortfolioImage\portfoliolayout-06.png" alt="">
+            <img src="maze_PortfolioImage\portfoliolayout-07.gif" alt="">
+            
         </div>
     </div>
 </div>
