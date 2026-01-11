@@ -11,7 +11,9 @@
             --canvas-width: 1000px;
             --canvas-height: 700px;
             --center-distance-x: 5px;
-            --center-distance-y: 0px;
+            --center-distance-y: 5px;
+            --theme-label-font-size: 22px;
+            --default-img-ratio: 1/1;
         }
         /* =========================================== */
 
@@ -48,10 +50,7 @@
                 font-weight: 700;; font-size: 22px; line-height: 0.95; letter-spacing: 0px; text-transform: uppercase; } 
         nav ul { list-style: none; padding: 0; margin: 0; display: flex; /* 横排 */ gap: 22px; /* 菜单间距 */
                  align-items: center; }
-        nav a { text-decoration: none; color: #000; text-transform: uppercase; display: inline-block; font-size: 13px; 
-            /* 核心修改：在这里就预留好位置，和 active 保持一致 */
-            padding: 2px 6px; 
-        }
+        nav a { text-decoration: none; color: #000; text-transform: uppercase; display: inline-block; font-size: 13px; padding: 2px 6px; }
         nav a.active{ background: #ccc; color: #fff;}
 
 
@@ -89,7 +88,7 @@
         /* 主题标签 */
         .theme-label {
             position: absolute;
-            font-size: 14px;
+            font-size: var(--theme-label-font-size);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -125,10 +124,18 @@
         }
 
         .project-item img {
-            width: 100%; height: auto; display: block;
-            filter: grayscale(100%); transition: 0.3s ease;
-            aspect-ratio: 4/3; 
-            object-fit: cover;
+            width: 100%;             /* 宽度跟随网格列宽，自动适应 */
+            
+            /* 1. 这里控制高度/比例 */
+            aspect-ratio: var(--default-img-ratio); 
+            /* 如果您的浏览器不支持 aspect-ratio，可以使用 height: 150px; 这种固定高度 */
+
+            /* 2. 关键属性：实现“缩放后截取” */
+            object-fit: cover;       /* 类似于 Photoshop 的 "Fill"，填满容器，多余部分裁掉 */
+            object-position: center; /* 从中间裁剪，也可以改成 top, bottom 等 */
+            
+            display: block;
+            transition: 0.3s ease;
         }
 
         .project-item:hover img {
@@ -182,52 +189,53 @@
         <div class="grid-canvas">
             
             <div class="quadrant top-left">
-                <div class="theme-label">AI & Generative</div>
+                <div class="theme-label">Computational<br>Design</div>
                 <div class="project-wrapper">
                     <div class="project-list">
-                        <a href="ai_teapot.html" class="project-item">
-                            <img src="ai_teapot_PortfolioImage/ai_teapot_7.png" alt="Tea Culture">
-                            <div class="project-title">Reinterpreting Tea (2025)</div>
-                        </a>
-                        <a href="#" class="project-item">
-                            <img src="https://via.placeholder.com/300x200" alt="Demo">
-                            <div class="project-title">Latent Space Walk</div>
+                        <a href="maze.html" class="project-item">
+                            <img src="maze_PortfolioImage\portfoliolayout-07.gif" alt="Maze">
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="quadrant top-right">
-                <div class="theme-label">Architecture</div>
+                <div class="theme-label">AI & Robotics<br>Exploration</div>
                 <div class="project-wrapper">
                     <div class="project-list">
-                        <a href="#" class="project-item">
-                            <img src="https://via.placeholder.com/300x220" alt="Arch">
-                            <div class="project-title">Urban Structure Analysis</div>
+                        <a href="ai_teapot.html" class="project-item">
+                            <img src="ai_teapot_PortfolioImage/ai_teapot_7.png" alt="Tea Culture">
+                        </a>
+                        <a href="tentacles.html" class="project-item">
+                            <img src="tentacles_PortfolioImage\outcomes.gif" alt="Tentacles">
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="quadrant bottom-left">
-                <div class="theme-label">Digital Fabrication</div>
+                <div class="theme-label">Environmental<br>Simulation</div>
                 <div class="project-wrapper">
                     <div class="project-list">
-                         <a href="#" class="project-item">
-                            <img src="https://via.placeholder.com/300x200" alt="Fab">
-                            <div class="project-title">3D Print Experiments</div>
+                        <a href="eps.html" class="project-item">
+                            <img src="eps_PortfolioImage\environmental performance-01.png" alt="Eps">
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="quadrant bottom-right">
-                <div class="theme-label">Experimental</div>
+                <div class="theme-label">Landscape<br>Architecture</div>
                 <div class="project-wrapper">
                     <div class="project-list">
-                         <a href="#" class="project-item">
-                            <img src="https://via.placeholder.com/300x250" alt="Exp">
-                            <div class="project-title">Interactive Installation</div>
+                        <a href="channel.html" class="project-item">
+                            <img src="channel_PortfolioImage\Portfolio_dengyeye_120dpi_page-0008.jpg" alt="Channel">
+                        </a>
+                        <a href="commercialBio.html" class="project-item">
+                            <img src="commercialBio_PortfolioImage\Portfolio_dengyeye_120dpi_page-0017.jpg" alt="CommercialBio">
+                        </a>
+                        <a href="roadswale.html" class="project-item">
+                            <img src="roadswale_PortfolioImage\Portfolio_dengyeye_120dpi_page-0013.jpg" alt="Roadswale">
                         </a>
                     </div>
                 </div>
