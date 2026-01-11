@@ -3,69 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yeyevoyeye | Portfolio</title>
+    <title>YEYE | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* 基础样式 */
-        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; margin: 0; padding: 40px; color: #333; }
-        
-        /* 顶部导航栏 */
-        header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 50px; }
-        .logo { font-size: 24px; font-weight: bold; line-height: 1.1; text-transform: uppercase; }
-        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 20px; }
-        nav a { text-decoration: none; color: #000; font-size: 14px; text-transform: uppercase; }
-        nav a:hover { color: #00ff00; } /* 模仿参考图的绿色高亮 */
+        /* ================= 配置区域 ================= */
+        :root {
+            --canvas-width: 1000px;
+            --canvas-height: 700px;
+            --center-distance-x: 5px;
+            --center-distance-y: 0px;
+        }
+        /* =========================================== */
 
-        /* 项目网格布局 */
-        .project-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* 自动填充网格 */
-            gap: 15px; 
-            margin-top: 20px;
+        body {
+            font-family: "Inter", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.4;
+            background: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
 
-        .project-item { position: relative; overflow: hidden; }
-        .project-item img { width: 100%; height: auto; display: block; filter: grayscale(20%); transition: 0.3s; }
-        .project-item:hover img { filter: grayscale(0%); transform: scale(1.02); }
+        /* 背景保持不变 */
+        body::before {
+            content: "";
+            position: fixed; inset: 0; z-index: -1;
+            background-image: url("assets/bg.jpg"); 
+            background-size: cover; background-position: left center;
+            filter: grayscale(100%); opacity: 0.18; pointer-events: none;
+        }
+        body::after {
+            content: ""; position: fixed; inset: 0; z-index: -1;
+            background: rgba(255,255,255,0.75); pointer-events: none;
+        }
 
-        /* 英文注释样式 */
-        .comment { font-size: 12px; margin-top: 8px; color: #666; line-height: 1.4; }
-        
-        footer { margin-top: 100px; font-size: 12px; border-top: 1px solid #eee; padding-top: 20px; }
+        /* ---------- 顶部导航 (严格对齐) ---------- */
+        header { display: flex; justify-content: space-between; margin-bottom: 40px; align-items: flex-start;  font-size: 13px; 
+                 padding: 12px; box-sizing: border-box;}
+        .logo { font-family: "Inter", Helvetica, Arial, sans-serif;
+                font-weight: 700;; font-size: 22px; line-height: 0.95; letter-spacing: 0px; text-transform: uppercase; } 
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; /* 横排 */ gap: 22px; /* 菜单间距 */
+                 align-items: center; }
+        nav a { text-decoration: none; color: #000; text-transform: uppercase; display: inline-block; font-size: 13px; 
+            /* 核心修改：在这里就预留好位置，和 active 保持一致 */
+            padding: 2px 6px; 
+        }
+        nav a.active{ background: #ccc; color: #fff;}
+
+
+        /* ---------- 居中画布与网格布局 ---------- */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .grid-canvas {
+            width: var(--canvas-width);
+            height: var(--canvas-height);
+            max-width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .quadrant {
+            position: relative;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 中心十字线 */
+        .quadrant:nth-child(odd) { border-right: 1px solid #999; }
+        .quadrant:nth-child(-n+2) { border-bottom: 1px solid #999; }
+
+        /* 主题标签 */
+        .theme-label {
+            position: absolute;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+            background: rgba(255,255,255,0.85);
+            padding: 4px 8px;
+            z-index: 10;
+        }
+
+        .quadrant.top-left .theme-label { bottom: var(--center-distance-y); right: var(--center-distance-x); text-align: right; border-top-left-radius: 4px;}
+        .quadrant.top-right .theme-label { bottom: var(--center-distance-y); left: var(--center-distance-x); text-align: left; border-top-right-radius: 4px;}
+        .quadrant.bottom-left .theme-label { top: var(--center-distance-y); right: var(--center-distance-x); text-align: right; border-bottom-left-radius: 4px;}
+        .quadrant.bottom-right .theme-label { top: var(--center-distance-y); left: var(--center-distance-x); text-align: left; border-bottom-right-radius: 4px;}
+
+        /* 项目列表容器 */
+        .project-wrapper {
+            width: 100%; height: 100%;
+            overflow-y: auto;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .project-wrapper::-webkit-scrollbar { display: none; }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .project-item {
+            text-decoration: none; color: inherit; display: block;
+            margin-bottom: 10px;
+        }
+
+        .project-item img {
+            width: 100%; height: auto; display: block;
+            filter: grayscale(100%); transition: 0.3s ease;
+            aspect-ratio: 4/3; 
+            object-fit: cover;
+        }
+
+        .project-item:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .project-title {
+            font-size: 11px; color: #666; line-height: 1.2; margin-top: 5px;
+        }
+
+        /* 左右对齐逻辑 */
+        .quadrant.top-left .project-list, .quadrant.bottom-left .project-list { justify-items: end; direction: rtl; } 
+        .quadrant.top-left .project-item, .quadrant.bottom-left .project-item { direction: ltr; text-align: right;} 
+
+        footer {
+            margin-top: 20px; font-size: 10px; color: #ccc; text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            body { padding: 15px; }
+            .grid-canvas { width: 100%; height: auto; display: block; }
+            .quadrant {
+                border-right: none !important;
+                border-bottom: 1px solid #ddd !important;
+                padding: 40px 0;
+            }
+            .theme-label {
+                position: static; margin-bottom: 15px; background: none; padding: 0;
+                text-align: left !important;
+            }
+            .quadrant.top-left .project-list, .quadrant.bottom-left .project-list { direction: ltr; justify-items: start; }
+            .quadrant.top-left .project-item, .quadrant.bottom-left .project-item { text-align: left; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">YEYE<br>PORTFOLIO</div>
-    <nav>
-        <ul>
-            <li><a href="#" style="background:#00ff00;">PROJECTS</a></li>
-            <li><a href="#">ABOUT</a></li>
-            <li><a href="#">CONTACT</a></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <div class="logo">YEYE<br>PORTFOLIO</div>
+        <nav>
+            <ul>
+                <li><a href="#">PROJECTS</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<main>
-    <div class="project-grid">
-        <div class="project-item">
-            <a href="ai_teapot.html">
-            <img src="ai_teapot_PortfolioImage/ai_still_life_painting-main.jpeg" alt="Project 1">
-            </a>
-            <div class="comment">Project 01: Experimental structure analysis in urban environments. 2025.</div>
+    <main>
+        <div class="grid-canvas">
+            
+            <div class="quadrant top-left">
+                <div class="theme-label">AI & Generative</div>
+                <div class="project-wrapper">
+                    <div class="project-list">
+                        <a href="ai_teapot.html" class="project-item">
+                            <img src="ai_teapot_PortfolioImage/ai_teapot_7.png" alt="Tea Culture">
+                            <div class="project-title">Reinterpreting Tea (2025)</div>
+                        </a>
+                        <a href="#" class="project-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Demo">
+                            <div class="project-title">Latent Space Walk</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quadrant top-right">
+                <div class="theme-label">Architecture</div>
+                <div class="project-wrapper">
+                    <div class="project-list">
+                        <a href="#" class="project-item">
+                            <img src="https://via.placeholder.com/300x220" alt="Arch">
+                            <div class="project-title">Urban Structure Analysis</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quadrant bottom-left">
+                <div class="theme-label">Digital Fabrication</div>
+                <div class="project-wrapper">
+                    <div class="project-list">
+                         <a href="#" class="project-item">
+                            <img src="https://via.placeholder.com/300x200" alt="Fab">
+                            <div class="project-title">3D Print Experiments</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quadrant bottom-right">
+                <div class="theme-label">Experimental</div>
+                <div class="project-wrapper">
+                    <div class="project-list">
+                         <a href="#" class="project-item">
+                            <img src="https://via.placeholder.com/300x250" alt="Exp">
+                            <div class="project-title">Interactive Installation</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </main>
 
-        <div class="project-item">
-            <img src="https://via.placeholder.com/400x300" alt="Project 2">
-            <div class="comment">Project 02: Digital fabrication and parametric design studies.</div>
-        </div>
-
-        </div>
-</main>
-
-<footer>
-    © 2025 yeyevoyeye
-</footer>
+    <footer>© 2025 yeyevoyeye</footer>
 
 </body>
 </html>
