@@ -111,7 +111,28 @@
             -ms-overflow-style: none;
         }
         .project-wrapper::-webkit-scrollbar { display: none; }
+        /* 1. 针对上面两个象限 (Top-Left, Top-Right) */
+        /* 它们的标签都在底部，所以给列表容器底部加 Padding，防止最后一张图被遮住 */
+        .quadrant.top-left .project-wrapper,
+        .quadrant.top-right .project-wrapper {
+            /* 1. 开启 Flex 布局，方向为垂直 */
+            display: flex;
+            flex-direction: column;
 
+            /* 2. 核心：让内部的内容“靠底对齐” */
+            justify-content: flex-end; 
+
+            /* 3. 这里的 Padding 是为了防止图片和底部的 Label 重叠 */
+            /* 请根据您 Label 的实际高度调整这个数值 */
+            padding-bottom: 60px; 
+        }
+
+        /* 2. 针对下面两个象限 (Bottom-Left, Bottom-Right) */
+        /* 它们的标签都在顶部，所以给列表容器顶部加 Padding，防止第一张图被遮住 */
+        .quadrant.bottom-left .project-wrapper,
+        .quadrant.bottom-right .project-wrapper {
+            padding-top: 60px;  /* 预留高度，让第一张图往下移 */
+}
         .project-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
