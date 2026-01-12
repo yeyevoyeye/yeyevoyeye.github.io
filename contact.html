@@ -28,24 +28,15 @@
         }
 
         /* ================= 头部导航 ================= */
-        header { 
-            display: flex; justify-content: space-between; 
-            margin-bottom: 60px; /* 比项目页稍大一点的间距 */
-            align-items: flex-start; font-size: 13px; padding: 12px; 
-        }
-        
-        /* Logo 链接样式 */
-        .logo { 
-            font-family: "Inter", Helvetica, Arial, sans-serif;
-            font-weight: 700; font-size: 22px; line-height: 0.95; 
-            text-transform: uppercase; color: #000; text-decoration: none;
-        }
-        
-        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 22px; align-items: center; }
+        header { display: flex; justify-content: space-between; margin-bottom: 40px; align-items: flex-start;  font-size: 13px; 
+                 padding: 12px; box-sizing: border-box;}
+        .logo { font-family: "Inter", Helvetica, Arial, sans-serif;
+                font-weight: 700;; font-size: 22px; line-height: 0.95; letter-spacing: 0px; text-transform: uppercase; 
+                  text-decoration: none; color: #333; display: block;} 
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; /* 横排 */ gap: 22px; /* 菜单间距 */
+                 align-items: center; }
         nav a { text-decoration: none; color: #000; text-transform: uppercase; display: inline-block; font-size: 13px; padding: 2px 6px; }
-        
-        /* 激活状态样式 */
-        nav a.active { background: #ccc; color: #fff; }
+        nav a.active{ background: #ccc; color: #fff;}
 
         /* ================= Resume 布局区域 ================= */
         .resume-container {
