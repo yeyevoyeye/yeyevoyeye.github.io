@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YEYE | Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         /* ================= 配置区域 ================= */
         :root {
             --canvas-width: 1000px;
             --canvas-height: 700px;
-            --center-distance-x: 5px;
-            --center-distance-y: 5px;
-            --theme-label-font-size: 22px;
+            --center-distance-x: 15px;
+            --center-distance-y: 15px;
+            --theme-label-font-size: 28px;
             --default-img-ratio: 1/1;
         }
         /* =========================================== */
@@ -20,7 +22,7 @@
         body {
             font-family: "Inter", Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 30px;
             color: #333;
             line-height: 1.4;
             background: #fff;
@@ -65,12 +67,14 @@
         }
 
         .grid-canvas {
+            position: relative;
             width: var(--canvas-width);
             height: var(--canvas-height);
             max-width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
+            transform: translateY(-20px);
         }
 
         .quadrant {
@@ -82,21 +86,42 @@
         }
 
         /* 中心十字线 */
-        .quadrant:nth-child(odd) { border-right: 1px solid #999; }
-        .quadrant:nth-child(-n+2) { border-bottom: 1px solid #999; }
+        .quadrant:nth-child(odd) { border-right: none; }
+        .quadrant:nth-child(-n+2) { border-bottom: 3px solid #e6e5e5; }
+
+        /* 缩短的中线（竖线）使用伪元素，位于容器中心并仅占一定高度 */
+        .grid-canvas::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 3px;
+            height: 65%;
+            background: #e6e5e5;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* 保证项目方框距离中线 15px（针对靠近中线的一侧） */
+        .quadrant.top-left, .quadrant.bottom-left { padding-right: 15px; }
+        .quadrant.top-right, .quadrant.bottom-right { padding-left: 15px; }
 
         /* 主题标签 */
         .theme-label {
             position: absolute;
+            font-family: "Cabin", Helvetica, Arial, sans-serif;
             font-size: var(--theme-label-font-size);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #000;
+            line-height: 1.00;
+            font-weight: 550;              /* Cabin Medium */
+            text-transform: none;
+            letter-spacing: 0.5px;         /* Cabin 不适合 1px 那么松 */
+            color: #8f8f8f;
             background: rgba(255,255,255,0.85);
             padding: 4px 8px;
             z-index: 10;
         }
+
 
         .quadrant.top-left .theme-label { bottom: var(--center-distance-y); right: var(--center-distance-x); text-align: right; border-top-left-radius: 4px;}
         .quadrant.top-right .theme-label { bottom: var(--center-distance-y); left: var(--center-distance-x); text-align: left; border-top-right-radius: 4px;}
@@ -135,8 +160,8 @@
 }
         .project-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
         }
 
         .project-item {
@@ -225,10 +250,10 @@
                 <div class="project-wrapper">
                     <div class="project-list">
                         <a href="ai_teapot.html" class="project-item">
-                            <img src="ai_teapot_PortfolioImage/ai_teapot_7.png" alt="Tea Culture">
+                            <img src="index_image/ai_teapot_homepage.png" alt="Tea Culture">
                         </a>
                         <a href="tentacles.html" class="project-item">
-                            <img src="tentacles_PortfolioImage\outcomes.gif" alt="Tentacles">
+                            <img src="index_image/tentacle_interaction_homepage.gif" alt="Tentacles">
                         </a>
                     </div>
                 </div>
@@ -239,7 +264,7 @@
                 <div class="project-wrapper">
                     <div class="project-list">
                         <a href="eps.html" class="project-item">
-                            <img src="eps_PortfolioImage\environmental performance-01.png" alt="Eps">
+                            <img src="index_image/environmental performance_homepage.png" alt="Eps">
                         </a>
                     </div>
                 </div>
@@ -250,13 +275,16 @@
                 <div class="project-wrapper">
                     <div class="project-list">
                         <a href="channel.html" class="project-item">
-                            <img src="channel_PortfolioImage\Portfolio_dengyeye_120dpi_page-0008.jpg" alt="Channel">
+                            <img src="index_image/channel_homepage.jpg" alt="Channel">
                         </a>
                         <a href="commercialBio.html" class="project-item">
-                            <img src="commercialBio_PortfolioImage\Portfolio_dengyeye_120dpi_page-0017.jpg" alt="CommercialBio">
+                            <img src="index_image/comercial_homepage.jpg" alt="CommercialBio">
                         </a>
                         <a href="roadswale.html" class="project-item">
-                            <img src="roadswale_PortfolioImage\Portfolio_dengyeye_120dpi_page-0013.jpg" alt="Roadswale">
+                            <img src="index_image/bioswale_homepage.jpg" alt="Roadswale">
+                        </a>
+                        <a href="officePark.html" class="project-item">
+                            <img src="index_image/office park-homepage.png" alt="Office Park">
                         </a>
                     </div>
                 </div>
